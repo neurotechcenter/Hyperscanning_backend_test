@@ -14,10 +14,6 @@
 #include "params.h"
 
 int main() {
-
-	// Load Parameter File
-	Params params = Params( "HyperscanningParameters.prm" );
-
 	// Load previous parameters
 
 	Port port( 1234, 100 );
@@ -62,6 +58,22 @@ int main() {
 		std::cout << "Session ID not provided by clients" << std::endl;
 		return -1;
 	}
+
+	if ( client1->paramsPath != client2->paramsPath ) {
+		std::cout << "Client ServerParameterPath do not match" << std::endl;
+		std::cout << "Client 1 ServerParameterPath: " << client1->paramsPath << std::endl;
+		std::cout << "Client 2 ServerParameterPath: " << client2->paramsPath << std::endl;
+		std::cout << "Please use matching ServerParameterPath" << std::endl;
+		return -1;
+	}
+
+	if ( client1->paramsPath.size() == 0 && client2->paramsPath.size() == 0 ) {
+		std::cout << "ServerParameterPath not provided by clients" << std::endl;
+		return -1;
+	}
+
+	// Load Parameter File
+	Params params = Params( client1->paramsPath );
 
 	std::cout << "Loading existing params" << std::endl;
 	//bool swaped = false;

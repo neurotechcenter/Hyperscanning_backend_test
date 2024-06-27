@@ -8,12 +8,13 @@
 #include <arpa/inet.h>
 #include <cstring>
 
-Client::Client( int sock, std::string ip, int p, std::string pversion, std::string pid, std::string psid ) {
+Client::Client( int sock, std::string ip, int p, std::string pversion, std::string pid, std::string psid , std::string pParamsPath) {
 	connection = sock;
 	ip_address = ip;
 	version = pversion;
 	id = pid;
 	sid = psid;
+	paramsPath = pParamsPath;
 	port = p;
 	states = new StateMachine();
 	stateChanges = new StateMachine();

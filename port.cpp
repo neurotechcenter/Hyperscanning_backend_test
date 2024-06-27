@@ -77,11 +77,21 @@ Client* Port::WaitForClient() {
 		}
 		std::string sid = std::string( buffer, sbuffer );
 
+		// parameter file path
+		if ( read( connection, &sbuffer, sizeof( size_t ) ) <= 0 )
+			std::cout << "error: " << errno << std::endl;
+		buffer = ( char* )malloc( sbuffer );
+		if ( read( connection, buffer, sbuffer ) <= 0 ) {
+			std::cout << "Error when reading Client ID: " << errno << std::endl;
+		}
+		std::string paramsPath = std::string( buffer, sbuffer );
+
 		std::cout << "Client Version: " << version << std::endl;
 		std::cout << "Client ID: " << id << std::endl;
 		std::cout << "Session ID: " << sid << std::endl;
+		std::cout << "Parameter path: " << paramsPath << std::endl;
 
-		Client* client = new Client( connection, inet_ntoa( sockaddr.sin_addr ), ntohs( sockaddr.sin_port ), version, id, sid );
+		Client* client = new Client( connection, inet_ntoa( sockaddr.sin_addr ), ntohs( sockaddr.sin_port ), version, id, sid, paramsPath );
 		connections.push_back( client );
 		return client;
 	}
